@@ -8,7 +8,7 @@ var fs = require('fs');
 var _ = require('lodash');
 var app = express();
 var gm = require('gm').subClass({imageMagick: true});
-var config = require('../server-config.js');
+
 var extend = require('util')._extend;
 
 app.use(require('connect-livereload')({ ignore: [/^\/dl/] }));
@@ -18,7 +18,7 @@ app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   limit: '5mb',
   extended: true
-})); 
+}));
 
 var listFiles = function (req, options, callback) {
 
@@ -53,7 +53,7 @@ var listFiles = function (req, options, callback) {
         }, this);
         finish();
     }, this));
-}; 
+};
 
 var uploadOptions = {
   tmpDir: '.tmp',
@@ -65,7 +65,7 @@ var uploadOptions = {
 app.get('/upload/', function(req, res) {
     listFiles(req, uploadOptions, function (files) {
       res.json({ files: files });
-    }); 
+    });
 });
 
 app.use('/upload/', upload.fileHandler(uploadOptions));
@@ -113,7 +113,7 @@ app.get('/img/', function(req, res) {
 
 app.post('/dl/', function(req, res) {
     var response = function(source) {
-        
+
         if (req.body.action == 'download') {
             res.setHeader('Content-disposition', 'attachment; filename=' + req.body.filename);
             res.setHeader('Content-type', 'text/html');
@@ -121,13 +121,13 @@ app.post('/dl/', function(req, res) {
             res.end();
         } else if (req.body.action == 'email') {
             var nodemailer = require('nodemailer');
-            var transporter = nodemailer.createTransport(config.emailTransport);
+            var transporter = nodemailer.createTransport(req.app.locals.emailTransport);
 
             var mailOptions = extend({
                 to: req.body.rcpt, // list of receivers
                 subject: req.body.subject, // Subject line
                 html: source // html body
-            }, config.emailOptions);
+            }, req.app.locals.emailOptions);
 
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
@@ -140,7 +140,7 @@ app.post('/dl/', function(req, res) {
                 }
             });
         }
-        
+
     };
 
     /*
