@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "node public/build.js",
-    "build:mosaico": "cd mosaico && npm build",
-    "build:donejs": "node public/build.js",
+    "build": "npm run build:donejs && npm run build:mosaico",
+    "build:mosaico": "cd mosaico && npm run build",
+    "build:donejs": "cd public && node build.js",
     "develop": "node index.js --develop",
     "db-migrate": "db-migrate up",
     "db:migrate": "db-migrate up",
