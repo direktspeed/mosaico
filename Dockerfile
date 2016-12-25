@@ -9,4 +9,4 @@ RUN npm install grunt-cli -g \
 
 EXPOSE 9006
 
-CMD ["grunt", "test", "default"]
+CMD ["npm", "start"]
