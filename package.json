@@ -15,7 +15,7 @@
     "test": "npm run jshint && cd public/ && npm test",
     "jshint": "jshint ./ --config .jshintrc",
     "install": "npm run install:frontend && npm run install:backend && npm run install:mosaico",
-    "install:mosaico": "cd mosaico && npm install",
+    "install:mosaico": "cd mosaico && npm install --unsafe-perm",
     "install:frontend": "node install.js",
     "install:backend": "npm run db-migrate",
     "install:new": "run install:frontend && npm run install:backend"
