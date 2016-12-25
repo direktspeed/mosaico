@@ -121,6 +121,94 @@
       document.addEventListener('DOMContentLoaded',function(){
         ko.applyBindings(viewModel);
       });
+
+      // get init values from local storeage and post them to backend
+      // NOTE: Maybe implament that on list
+      /*
+      var initFromLocalStorage = function (options, hash_key, customExtensions) {
+                               var hash = global.location.hash ? global.location.href.split("#")[2] : undefined;
+
+                              if (hash !== 'new') {
+
+                                  var md;
+                                  var td;
+                                  var postUrl = 'YOUR-BACKEND-URL';
+                                  $.post(postUrl, {
+                                      action: 'getmd',
+                                      key: hash_key
+                                  }, null, 'html').success(function () {
+
+                                      md = JSON.parse(arguments[0]);
+
+                                      console.log(md);
+
+
+                                      $.post(postUrl, {
+                                          action: 'gettd',
+                                          key: hash_key
+                                      }, null, 'html').success(function () {
+                                          var model = JSON.parse(arguments[0]);
+
+                                          var extensions = typeof customExtensions !== 'undefined' ? customExtensions : [];
+                                          extensions.push(localStoragePluginFactory(md, options.emailProcessorBackend));
+                                          start(options, md, model, extensions);
+
+
+                                      });
+                                  });
+
+                              } else {
+                                  var mdStr = global.localStorage.getItem("metadata-" + hash_key);
+                                  if (mdStr !== null) {
+                                      var model;
+                                      var td = global.localStorage.getItem("template-" + hash_key);
+                                      if (td !== null)
+                                          model = JSON.parse(td);
+                                      var md = JSON.parse(mdStr);
+
+                                      var extensions = typeof customExtensions !== 'undefined' ? customExtensions : [];
+                                      extensions.push(localStoragePluginFactory(md, options.emailProcessorBackend));
+                                      start(options, md, model, extensions);
+
+
+                                  }
+                              }
+
+
+
+                          };
+*/
+/*
+//ORIGINAL IMPLEMENTATION
+/*var md;
+ var td;
+ var postUrl = options.templateBackend;
+ var post = $.post(postUrl, {
+ action: 'getmd',
+ key: hash_key
+ }, null, 'html').success(function () {
+ md = JSON.parse(arguments[0]);
+ console.log(md);
+ //viewModel.notifier.success(viewModel.t("Template saved to your profile..."));
+ });
+
+
+ var postUrl = options.templateBackend;
+ var post = $.post(postUrl, {
+ action: 'gettd',
+ key: hash_key
+ }, null, 'html').success(function () {
+ td = JSON.parse(arguments[0]);
+ console.log(td);
+ //viewModel.notifier.success(viewModel.t("Template saved to your profile..."));
+ });
+
+ var model = JSON.parse(td);
+ start(options, md, model, extensions);
+ console.log(td);
+
+*/
+
     </script>
     <style>
 body {

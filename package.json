@@ -1,9 +1,10 @@
 {
   "name": "mosaico",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A HTML & Email Template Creator/Editor app",
   "main": "index.js",
   "scripts": {
+    "release": "git commit -am 'version release' && git push origin master",
     "start": "node index.js",
     "build": "npm run build:donejs && npm run build:mosaico",
     "build:mosaico": "cd mosaico && npm run build",
