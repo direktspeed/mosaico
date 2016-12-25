@@ -98,6 +98,20 @@ To install the project's JavaScript dependencies run:
 npm install
 ```
 
+### Docker
+
+We bundle a small Dockerfile based on centos7 to test mosaico with no need to install dependencies.
+```
+docker build -t mosaico/mosaico .
+docker run -p 9006:9006 mosaico/mosaico
+```
+then open a browser to point to the port 9006 of your docker machine IP.
+
+### Serving via Apache PHP or Django?
+First you have to build it using grunt, then you can read (https://github.com/voidlabs/mosaico/wiki/Serving-Mosaico).
+
+
+
 Additionally DoneJS's command line utilities need to be installed globally:
 if you want to use donejs * commands
 
@@ -126,3 +140,6 @@ You're finished! Explore some of the app's features:
 - Live reload (`npm run develop`) OR (`donejs develop`)
 - Run the tests (`npm test`) OR (`donejs test`)
 - Generate the documentation (`npm run document`) OR (`donejs document`)
+
+### CONTRIBUTING
+See the [CONTRIBUTING file](https://github.com/direktspeed/mosaico/blob/master/CONTRIBUTING.md)
