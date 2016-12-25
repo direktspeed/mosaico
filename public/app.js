@@ -24,7 +24,7 @@ const AppViewModel = DefineMap.extend('App',
 	* The app title based on current page
 	**/
 	get title(){
-		return "BitBalls | " + this.pageComponentConfig.title;
+		return "Mosaico | " + this.pageComponentConfig.title;
 	},
 	/**
 	* @property {String} mosaico/app.title title
@@ -133,6 +133,15 @@ const AppViewModel = DefineMap.extend('App',
 					attributes: "{is-admin}='./isAdmin'",
 					moduleName: "templatesfilled/create/"
 				};
+
+		} else if(page === "edittemplate"){
+				return {
+					title: "New Email Template",
+					componentName: "templatesfilled-edit",
+					attributes: "{is-admin}='./isAdmin'",
+					moduleName: "templatesfilled/edit/"
+				};
+
 
 		} else {
 			return {

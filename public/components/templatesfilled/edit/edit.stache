@@ -1,45 +1,100 @@
 <can-import from="mosaico/util/numberToString" />
 
-{{#if isAdmin}}
+<script>
+console.log('EXEC')
+setTimeout(function () {
+    var templates = "/editor.html#templates/versafix-1/template-versafix-1.html"
+    console.log('EXEC INNER')
+    var beforeHtml = '<div style="position: relative;"><ul>'
+
+    for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+      console.log( localStorage.key( i )  );
+      if (localStorage.key( i ).indexOf('template') > -1) {
+        // console.log( localStorage.key( i ) );
+        // beforeHtml = beforeHtml + '<li><a href="#'+localStorage.key( i ).split('-')[1]+'">'+localStorage.key( i )+'</a></li>'
+      }
+      if (localStorage.key( i ).indexOf('metadata') > -1) {
+        if (localStorage.getItem( 'template-'+localStorage.key( i ).split('-')[1] ) !== null) {
+        console.log( 'template-'+localStorage.key( i ).split('-')[1] );
+        console.log( localStorage.getItem( 'template-'+localStorage.key( i ).split('-')[1] ) )
+        console.log( localStorage.getItem( localStorage.key( i ) ) )
+        console.log( 'template-'+localStorage.key( i ).split('-')[1] );
+        beforeHtml = beforeHtml + '<li><a href="#'+localStorage.key( i ).split('-')[1]+'">'+localStorage.key( i ).split('-')[1]+'</a></li>'
+        } else {
+          beforeHtml = beforeHtml + '<li style="color: red;"><a style="color: red;" href="#'+localStorage.key( i ).split('-')[1]+'">'+localStorage.key( i ).split('-')[1]+'</a></li>'
+          // console.log('GOT: '+ localStorage.getItem( 'template-'+localStorage.key( i ).split('-')[1] ))
+        }
+      }
+
+    }
+
+    var afterHtml = '</ul></div>'
+    var completHtml = beforeHtml + afterHtml
+
+    jQuery('#loading').html(completHtml);
+
+    $(window).on('hashchange', function() {
+          //.. work ..
+          if ($(location).attr('href').split('#')[1] == 0) {
+          window.location.href = $(location).attr('href')
+          console.log('BEFORE RELOAD:' + $(location).attr('href'))
+          //window.location.href += "#mypara";
+          // Check if Key Exists else do Nothing
+          location.reload();
+          console.log('GOOD')
+        } else {
+          console.log($(location).attr('href').split('#')[1])
+        }
+    });
+
+}, 1000)
+
+
+</script>
+<br />
+<div><h1>In Browser edited Email Templates</h1></div>
+<div id="loading">...Loading from your browser</div>
+
+{{#if isAdminDisabled}}
   <form class="edit-form" ($submit)="savePlayer(%event,%element)" action="">
-    {{#if player.isNew}}
+    {{#if templatesfilled.isNew}}
       <h3>Create Player</h3>
     {{else}}
       <h3>Update Player</h3>
     {{/if}}
     <div class="form-group">
-      <label for="player-name">Name</label>
-      <input type="text" class="form-control" id="player-name" placeholder="fullname" {($value)}="player.name"/>
+      <label for="templatesfilled-name">Name</label>
+      <input type="text" class="form-control" id="templatesfilled-name" placeholder="fullname" {($value)}="templatesfilled.name"/>
     </div>
     <div class="form-group">
-      <label for="player-weight">Weight</label>
+      <label for="templatesfilled-weight">Weight</label>
       <input
       	type="number"
       	class="form-control"
-      	id="player-weight"
+      	id="templatesfilled-weight"
       	placeholder="weight in pounds"
-      	{($value)}="numberToString(~player.weight)"/>
+      	{($value)}="numberToString(~templatesfilled.weight)"/>
     </div>
     <div class="form-group">
-      <label for="player-height">Height</label>
+      <label for="templatesfilled-height">Height</label>
       <input
       	type="number"
       	class="form-control"
-      	id="player-height"
-      	placeholder="height in inches (Ex: 71)" 
-      	{($value)}="numberToString(~player.height)"/>
+      	id="templatesfilled-height"
+      	placeholder="height in inches (Ex: 71)"
+      	{($value)}="numberToString(~templatesfilled.height)"/>
     </div>
     <div class="form-group">
-      <label for="player-birthday">Birthday</label>
+      <label for="templatesfilled-birthday">Birthday</label>
       <input
       	type="date"
       	class="form-control"
-      	id="player-birthday"
+      	id="templatesfilled-birthday"
       	placeholder="day of birth"
-      	{($value)}="player.birthDate"/>
+      	{($value)}="templatesfilled.birthDate"/>
     </div>
-    <button type="submit" class="btn btn-primary" >{{#player.isNew}}Create{{else}}Update{{/player.isNew}}</button>
-    {{#unless player.isNew}}
+    <button type="submit" class="btn btn-primary" >{{#templatesfilled.isNew}}Create{{else}}Update{{/templatesfilled.isNew}}</button>
+    {{#unless templatesfilled.isNew}}
       <a class="btn btn-default" ($click)="cancel(%element)">Cancel</a>
     {{/unless}}
     {{#if savePromise.isRejected}}

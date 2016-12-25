@@ -31,14 +31,16 @@
 var Component = require("can-component");
 var TemplatesFilled = require("mosaico/models/templatesfilled");
 var DefineMap = require("can-define/map/map");
-
+var $ = require('jquery');
 require("bootstrap/dist/css/bootstrap.css!");
 require('can-define-backup');
 require("can-construct");
+require("can-route");
 
 
 exports.ViewModel = DefineMap.extend("TemplatesFilledEditVM",
 {
+	jQuery: $,
 	/**
 	* @property {Boolean} mosaico/components/templatesfilled/edit.isAdmin isAdmin
 	* @parent mosaico/components/templatesfilled/edit.properties
