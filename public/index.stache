@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{{title}}</title>
+	</head>
+	<body>
+		<can-import from="mosaico/app.less!" />
+		<can-import from="mosaico/app" export-as="viewModel" />
+		<can-import from="mosaico/components/navigation/navigation" />
+		<div class="container">
+			<mosaico-navigation {app}="." />
+			{{{pageComponent}}}
+
+		</div>
+		{{#isProduction}}
+			<script
+				src="{{joinBase 'node_modules/steal/steal.production.js'}}"
+				main="index.stache!done-autorender">
+			</script>
+		{{else}}
+			<script src="/node_modules/steal/steal.js"></script>
+		{{/isProduction}}
+	</body>
+</html>

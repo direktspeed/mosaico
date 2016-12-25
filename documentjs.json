@@ -1,14 +1,15 @@
 {
-  "sites": {
-    "docs": {
-      "dest": "docs",
-      "parent": "ds-mosaico-admin",
-      "pageConfig": {
-        "page": "docs"
-      },
-      "glob": {
-        "pattern": "src/**/*.{js,md}"
-      }
-    }
-  }
+	"sites" : {
+		"docs": {
+			"glob" : {
+				"ignore": ["{node_modules,public/node_modules,migrations,public/dist}/**/*"]
+			},
+			"parent": "mosaico",
+			"dest": "docs"
+		}
+	},
+	"siteDefaults": {
+		"source": "https://github.com/direktspeed/mosaico",	
+		"templates" : "theme/templates"
+	}
 }

@@ -1,68 +1,94 @@
 {
-  "name": "can-mosaico",
-  "version": "0.0.1",
-  "description": "Free Email Template Editor",
-  "directories": {
-    "test": "test"
+  "name": "mosaico",
+  "version": "0.4.1",
+  "description": "A HTML & Email Template Creator/Editor app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "node public/build.js",
+    "build:mosaico": "cd mosaico && npm build",
+    "build:donejs": "node public/build.js",
+    "develop": "node index.js --develop",
+    "db-migrate": "db-migrate up",
+    "db:migrate": "db-migrate up",
+    "document": "documentjs -d",
+    "test": "npm run jshint && cd public/ && npm test",
+    "jshint": "jshint ./ --config .jshintrc",
+    "install": "npm run install:frontend && npm run install:backend && npm run install:mosaico",
+    "install:mosaico": "cd mosaico && npm install",
+    "install:frontend": "node install.js",
+    "install:backend": "npm run db-migrate",
+    "install:new": "run install:frontend && npm run install:backend"
+  },
+  "dependencies": {
+    "async": "^1.4.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.13.3",
+    "bookshelf": "^0.8.1",
+    "checkit": "^0.6.0",
+    "cookie-parser": "^1.4.1",
+    "db-migrate": "^0.9.18",
+    "ejs": "^2.3.1",
+    "express": "~4.9.x",
+    "express-session": "^1.11.3",
+    "gm": "^1.23.0",
+    "jquery-file-upload-middleware": "^0.1.8",
+    "knex": "^0.8.6",
+    "lodash": "^3.10.1",
+    "nodemailer": "^2.3.0",
+    "npm": "^3.7.2",
+    "passport": "~0.2.0",
+    "passport-local": "^1.0.0",
+    "pg": "4.x"
+  },
+  "engines": {
+    "node": "0.12.2"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/direktspeed/mosaico.git"
+    "url": "https://github.com/heroku/node-js-getting-started"
   },
-  "main": "can-mosaico/index.stache!done-autorender",
-  "files": [
-    "src"
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
   ],
-  "system": {
-    "main": "can-mosaico/index.stache!done-autorender",
-    "directories": {
-      "lib": "src"
-    },
-    "configDependencies": [
-      "live-reload",
-      "node_modules/can-zone/register"
-    ],
-    "transpiler": "babel",
-    "npmAlgorithm": "flat"
-  },
-  "dependencies": {
-    "can-component": "^3.0.4",
-    "can-connect": "^1.0.21",
-    "can-define": "^1.0.10",
-    "can-route": "^3.0.6",
-    "can-route-pushstate": "^3.0.1",
-    "can-stache": "^3.0.16",
-    "can-view-autorender": "^3.0.3",
-    "can-zone": "^0.6.0",
-    "done-serve": "^0.3.0-pre.1",
-    "done-autorender": "^0.9.0-pre.3",
-    "done-component": "^0.6.0-pre.1",
-    "done-css": "^2.1.0-pre.0",
-    "generator-donejs": "^0.10.0-pre.4",
-    "steal": "^1.0.5",
-    "steal-stache": "^3.0.4"
-  },
+  "license": "MIT",
   "devDependencies": {
-    "documentjs": "^0.4.4",
-    "donejs-deploy": "^0.4.2",
-    "funcunit": "^3.1.0",
-    "steal-qunit": "^1.0.0",
-    "steal-tools": "^1.0.1",
-    "testee": "^0.3.0",
-    "can-fixture": "^1.0.11"
+    "documentjs": "^0.3.3",
+    "donejs": "^0.7.0-pre.1",
+    "donejs-cli": "^0.10.0-pre.0",
+    "donejs-deploy": "^0.4.1",
+    "jshint": "^2.9.1",
+    "maildev": "^0.12.1"
   },
-  "author": "DIREKTSPEED <frank@dspeed.eu>",
-  "license": "GPL-3.0",
-  "scripts": {
-    "test": "testee src/test.html --browsers firefox --reporter Spec && grunt jasmine_node",
-    "start": "done-serve --port 8080",
-    "develop": "done-serve --develop --port 8080",
-    "document": "documentjs",
-    "build": "npm run build:mosaico && node build.js",
-    "build:mosaico": "cd mosaico && grunt build --force",
-    "install:mosaico": "cd mosaico && npm install",
-    "postinstall": "npm run install:mosaico",
-    "deps": "echo bower-npm-install --non-interactive"
+  "donejs": {
+    "deploy": {
+      "root": "public/dist",
+      "services": {
+        "production": {
+          "type": "firebase",
+          "config": {
+            "firebase": "mosaico-donejs",
+            "public": "./public/dist",
+            "headers": [
+              {
+                "source": "/**",
+                "headers": [
+                  {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
   },
-  "engine": "node >= 6.0.0"
+  "urls": {
+    "prod": "https://mosaico.herokuapp.com/",
+    "dev": "http://localhost:5000/"
+  }
 }

@@ -164,7 +164,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: 'dist',
         src: '**',
-        dest: '../public'
+        dest: '../public/mosaico'
       }
     },
 
@@ -239,7 +239,8 @@ module.exports = function(grunt) {
   grunt.registerTask('js', ['combineKOTemplates', 'browserify', 'exorcise']);
   grunt.registerTask('css', ['less', 'postcss']);
   grunt.registerTask('server', ['express', 'watch', 'express-keepalive']);
-  grunt.registerTask('build', ['bowercopy', 'copy:res', 'jshint', 'js', 'css', 'copy:release']);
+  grunt.registerTask('build', ['bowercopy', 'copy:res','jshint', 'js', 'css', 'copy:release']);
+  grunt.registerTask('build:old', ['bowercopy', 'copy:res', 'jshint', 'js', 'css');
   grunt.registerTask('default', ['build', 'server']);
   grunt.registerTask('test', ['jasmine_node']);
 };

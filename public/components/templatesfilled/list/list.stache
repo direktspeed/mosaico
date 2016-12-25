@@ -1,0 +1,53 @@
+<can-import from="mosaico/components/player/edit/" />
+<can-import from="mosaico/components/player/create/" />
+<h2>Email Templates</h2>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>template</th>
+			<th>metadata</th>
+			<th>Toolbox</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#templatesfilledPromise.isPending}}
+			<tr class='info'><td colspan='5'>Loading</td></tr>
+		{{/templatesfilledPromise.isPending}}
+		{{#if templatesfilledPromise.isResolved}}
+			{{#each templatesfilledPromise.value}}
+				<tr>
+					{{#eq . editingTemplatesFilled}}
+						<td>
+							<templatesfilled-edit {(player)}="editingTemplatesFilled" {is-admin}="isAdmin"
+								(saved)="removeEdit" (canceled)="removeEdit"/>
+						</td>
+					{{else}}
+						<td>{{name}}</td>
+						<td>{{template}}</td>
+						<td>{{metadata}}</td>
+						<td>TOOLBOX icons</td>
+						<td>
+							{{#if isAdmin}}
+								<button type="button" class="btn btn-default" ($click)="editTemplatesFilled(.)">
+									<span class='glyphicon glyphicon-edit'/>
+								</button>
+								<button type="button" class="btn btn-danger"
+									($click)="deleteTemplatesFilled(.)"
+									{{#isDestroying}}disabled{{/isDestroying}}>
+									<span class='glyphicon glyphicon-remove'/>
+								</button>
+							{{/if}}
+						</td>
+					{{/if}}
+				</tr>
+			{{else}}
+				<tr class="empty-list-placeholder"><td class="text-center lead" colspan="5">No TemplatesFilled</td></tr>
+			{{/each}}
+		{{/if}}
+	</tbody>
+</table>
+{{#if isAdmin}}
+<templatesfilled-create {is-admin}="isAdmin" {(templatesfilled)}="editingTemplatesFilled"/>
+{{/if}}

@@ -1,137 +1,128 @@
-##
-If you host via Apache plz use only the /public folder and run npm build befor if you coded some changes.
+@page mosaico Mosaico
+@group mosaico.components Components
+@group mosaico.clientModels Client Models
+@group mosaico.services Services
+@group mosaico.serviceModels Service Models
 
-# can-mosaico
+[![Build Status](https://travis-ci.org/direktspeed/mosaico.svg?branch=master)](https://travis-ci.org/direktspeed/mosaico)
 
-Welcome to the ds-mosaico DoneJS application!
+Mosaico is a [DoneJS](https://donejs.com) app that enables users to coordinate
+the players, teams, games, rounds and recordings of a basketball tournament.
+It also serves as an example of how to use DoneJS with sessions, user
+privileges, RESTful services, and ORM models.
 
-## Getting started
+If you want to run and build plain old mosaico we stayed compatible with it at present
+- host /mosaico directly
+- src /mosaico grunt build:old
 
-To install all dependencies, (e.g. after cloning it from a Git repository) run
+
+If you want to run the new fresh with own backend.
+- npm install && npm start
+- optinal updates - src /mosaico grunt build our mosaico src automaticly updates /public/mosaico
+
+------
+
+To run the Mosaico app locally, run its tests, or generate its documentation
+follow the steps outlined below.
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Setup Environment](#setup-environment)
+  - [Installing PostgreSQL on OSX](#installing-postgresql-on-osx)
+  - [Installing PostgreSQL on Linux](#installing-postgresql-on-linux)
+  - [Installing PostgreSQL on Windows](#installing-postgresql-on-windows)
+- [Download Source](#download-source)
+- [Install Dependencies](#install-dependencies)
+- [Prepare the Database](#prepare-the-database)
+- [Start the Server](#start-the-server)
+- [Register a User](#register-a-user)
+- [Enjoy](#enjoy)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+### Setup Environment
+
+Make sure you have installed:
+
+- [Node 7](https://nodejs.org/en/download/)
+- NPM 3 *(packaged with Node)*
+- OPTIONAL -[PostgreSQL](https://www.postgresql.org/download/)
+
+### Download Source
+
+Clone this repo using git:
 
 ```
-npm install donejs -g
+git clone https://github.com/direktspeed/mosaico.git
+```
+
+Navigate to the repository's directory
+
+```
+cd mosaico
+```
+
+### Prepare the Database SQLite
+- npm install
+- npm run db-migrate
+
+### Prepare REMOTE the Database
+
+Make sure the `postgres` process is running:
+
+```
+ps | grep postgres
+```
+
+You should see "postgres -D" among the output:
+
+```
+92831 ttys000    0:00.02 postgres -D /usr/local/var/postgres
+92856 ttys000    0:00.00 grep postgres
+```
+
+With that confirmed we can create the database that the mosaico app
+will persist its data to:
+
+```
+createdb mosaico
+```
+
+### Install Dependencies
+
+To install the project's JavaScript dependencies run:
+
+```
 npm install
 ```
 
-## Running tests
-
-Tests can be run with
-
-```
-donejs test
-```
-
-## Development mode
-
-Development mode can be started with
+Additionally DoneJS's command line utilities need to be installed globally:
+if you want to use donejs * commands
 
 ```
-donejs develop
+npm install -g donejs-cli
 ```
 
-## Build and production mode
+### Start the Server
 
-To build the application into a production bundle run
-
-```
-donejs build
-```
-
-In Unix environment the production application can be started like this:
+With all the prerequisite setup completed the server can be started by running:
 
 ```
-NODE_ENV=production npm start
+npm start
+# Optional - donejs start
 ```
 
+### Register a User
 
-# Mosaico - Responsive Email Template Editor
+Navigate to [http://localhost:5000/register](http://localhost:5000/register)
+in your browser and follow the instructions.
 
-Mosaico is a JavaScript library (or maybe a single page application) supporting the editing of email templates.
-The great thing is that Mosaico itself does not define what you can edit or what styles you can change: this is defined by the template. This makes Mosaico very flexible.
+### Enjoy
 
+You're finished! Explore some of the app's features:
 
-![Mosaico Screenshot](res/img/screenshot.png)
-
-
-At this time we provide a single template to illustrate some best practice examples: more templates will come soon! Please get in touch with us if you want to make your email html template "Mosaico ready".
-
-### Live demo
-On https://mosaico.io you can see a live demo of Mosaico: the live deploy has a custom backend (you don't see it) and some customization (custom Moxiemanager integration, customized onboarding slideshow, contextual menu, and some other small bits), but 95% of what you see is provided by this library. You will also see a second working template there: we are still working to open source it. Stay tuned!
-
-#### News
-
-Subscribe to our newsletter to get updates: http://mosaico.voxmail.it/user/register
-
-### More Docs from the Wiki
-
-[Mosaico Basics](https://github.com/voidlabs/mosaico/wiki)
-
-[Developer Notes](https://github.com/voidlabs/mosaico/wiki/Developers)
-
-### Build/Run  [![Build Status](https://travis-ci.org/voidlabs/mosaico.svg)](https://travis-ci.org/voidlabs/mosaico)
-
-You need NodeJS v6.0 or higher + ImageMagick
-
-this may raise warnings about Knockout, ignore them. It will probably fail on some colorpicker dependency, just run it again and will work:
-```
-  npm install
-```
-if you don't have it, install grunt-cli globally
-```
-  npm install -g grunt-cli
-```
-compile and run a local webserver (http://127.0.0.1:9006) with incremental build and livereload
-```
-  grunt
-```
-*IMPORTANT* in order to use image uploading/processing feature in Node you need imageMagick installed in your environment.
-e.g. running "convert" and "identify" on the command line should output imageMagick command line help (if you are on Windows and install imageMagick 7.x then make sure to install ["legacy utilities"](https://github.com/aheckmann/gm/issues/559)).
-
-If you create your own template you can generate the needed "thumbnails"/"block thumbnails" by running:
-```
-grunt makeThumbs:main:yourtemplatename
-```
-
-*NOTE* we have reports that default Ubuntu node package have issues with building Mosaico via Grunt. If you see a ```Fatal error: watch ENOSPC``` then have a look at https://github.com/voidlabs/mosaico/issues/82
-
-### Serving via Apache PHP or Django?
-First you have to build it using grunt, then you can read (https://github.com/voidlabs/mosaico/wiki/Serving-Mosaico).
-
-*Access Interpreting* wrote a sample [PHP backend](https://github.com/ainterpreting/mosaico-php-backend) so you can start from there if you want to use Mosaico with an Apache/PHP backend.
-
-*Ryan Nowakowski* wrote a [Python/Django backend](https://github.com/tubaman/django-mosaic) and also wrote a [test-suite in Python](https://github.com/tubaman/mosaico-server-tests) to help testing Mosaico backends
-
-### Are you having issues with Mosaico?
-
-Please make sure:
-- you understand you have to build it and to run a backend server (either the node.js version bundled with this project or the php backend referenced above or write your own)
-- you read this Readme *three* times and followed the instructions
-- you understand I'll close any GitHub issue with insufficient information: if you want help then you'll have to take your time to explain your issue.
-- you don't ask for a binary/executable to be used as a standalone desktop application
-- you understand you can't simply open index.html/editor.html and expect it to work if you don't build the library and don't run a backend server and access that files through the webserver.
-- you don't add off topic comments to an existing issue: if you want to add that you are having the same issue please make sure you are having the same issue described. If you are unsure, open a new issue following the rules (I prefer a duplicated issue than a chaotic issue mixing unrelated things).
-
-##### issues building:
-- take note of the full log of your npm install, and grunt commands output
-- open a GitHub issues saying that you read this doc
-- paste the output from npm install and grunt
-- write your full environment (your operative system name and version, your node version, your npm version)
-
-##### issues running/editing
-if your problem is not with the building then when you open a GitHub issue:
-- make sure you specify if you are using the bundled backend or php backend or any other kind of deployment
-- tell us the browser you are using (name and version) and test at least a *second* browser to tell us if this happen in both or only one (tell us the details about the second browser too).
-- test the same scenario on https://mosaico.io and tell us if you see the same issue
-- if you are having issues running with Apache then specify you installed the php backend from access interpreting and WHY you think you are having problem with mosaico.js and not with that specific backend (did you try with bundled node.js backend?)
-
-##### rendering issues with templates generated by Mosaico
-- open an issue only if you have a screenshot
-- when you open an issue please tell us what template you are using
-- tell which email client show the issue (version, name, operative system)
-- tell us which backend you are using (the bundled one ran with grunt, the php backend referenced above, or your custom backend).
-- if you are sending the email using a different way then most of the times the template gets broken by your way to send it: so try the same thing on mosaico.io and confirm you see the same rendering issues.
-
-### Contact Us
-
-Please contact us if you have ideas, suggestions or, even better, you want to collaborate on this project or you need COMMERCIAL support: info@mosaico.io . Please DON'T write to this email to get free support: use Git issues for that.
+- Live reload (`npm run develop`) OR (`donejs develop`)
+- Run the tests (`npm test`) OR (`donejs test`)
+- Generate the documentation (`npm run document`) OR (`donejs document`)

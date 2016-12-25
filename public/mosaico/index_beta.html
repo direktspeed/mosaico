@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="vendor/jquery.min.js"></script>
+    <script type="text/javascript" src="socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/feathers-client@1.8.0/dist/feathers.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/feathers-localstorage@1.0.0/dist/localstorage.js"></script>
+    <script type="text/javascript">
+      // var socket = io('http://api-vid2gif.impact-2.com');
+      // .configure(feathers.socketio(socket))
+
+      var app = feathers()
+        .configure(feathers.hooks())
+        .use('messages', feathers.localstorage({ storage: window.localStorage }));
+
+      var localEmailTemplateService = app.service('messages');
+
+      localEmailTemplateService.on('created', function(message) {
+        console.log('Someone created a message', message);
+        // Lets sync that back to the browser
+        // window.localStorage
+      });
+
+      // make Read Create Loop
+      localEmailTemplateService.create({
+        text: 'EmailTemplate from client'
+      });
+    </script>
+    <script>
+      $( document ).ready(function tellMyName() {
+        var hash = $('iframe').attr('src') + '#' + $(location).attr('href').split('#')[1];
+        document.write('<iframe src="http://example.com/mydata/page.php?url=' + url + '"></iframe>');
+        //$('iframe').attr('src') =
+        // editor.html#templates/'+name+'/template-'+name+'.html
+      })
+    </script>
+  </head>
+  <body>
+    <div id="navigation"></div>
+    <div id="index"><iframe width="100%" height="640px" src="index_en.html"></iframe></div>
+  </body>
+</html>

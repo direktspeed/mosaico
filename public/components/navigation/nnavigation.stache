@@ -1,0 +1,147 @@
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+  <div class="container-fluid">
+    <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+    <a href="#" class="brand">{{message}}</a>
+    <div class="nav-collapse">
+      <ul class="nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a data-toggle="dropdown" class="dropdown-toggle" href="#">Dropdown <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li>
+                <a href="#">Current emailTemplates <i class="icon-arrow-right"></i></a>
+                <ul id="cet" class="dropdown-menu scrollable-menu sub-menu">
+                </ul>
+            </li>
+            <li>
+                <a href="#">new emailTemplate <i class="icon-arrow-right"></i></a>
+                <ul class="dropdown-menu sub-menu templates">
+                    <li><a href="#">tedc15</a></li>
+                    <li><a href="#">versafix-1</a></li>
+                    <li><a href="#">tutorial</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li class="nav-header">Nav header</li>
+            <li><a href="#">Separated link</a></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form action="" class="navbar-search pull-left">
+        <input type="text" placeholder="Search" class="search-query span2">
+      </form>
+      <ul class="nav pull-right">
+        <li><a href="#">Link</a></li>
+        <li class="divider-vertical"></li>
+        <li class="dropdown">
+          <a class="#" href="#">Menu</a>
+        </li>
+      </ul>
+    </div><!-- /.nav-collapse -->
+  </div>
+</div>
+</div>
+
+<hr>
+
+<div id="ADD">
+
+</div>
+<script>
+
+$(function(){
+  var emalTemplate = {
+    get: function(key){
+      var result = {}
+      result[key] = {
+        template: window.localStorage.getItem('template-'+key),
+        metadata: window.localStorage.getItem('metadata-'+key)
+      }
+      return result
+    },
+    set: function(TemplateMetadata){
+      var key = Object.keys(TemplateMetadata)[0]
+      window.localStorage.setItem('metadata-'+key, TemplateMetadata.metadata)
+      window.localStorage.setItem('template-'+key, TemplateMetadata.template)
+    },
+    del: function(key){
+
+    }
+  }
+  var templates = "/editor.html#templates/versafix-1/template-versafix-1.html"
+  var beforeHtml = ''
+  var keys = []
+  for ( var i = 0, len = window.localStorage.length; i < len; ++i ) {
+    // console.log( window.localStorage.getItem( window.localStorage.key( i ) ) );
+    if (window.localStorage.key( i ).indexOf('template') > -1) {
+      // console.log( window.localStorage.key( i ) );
+      // beforeHtml = beforeHtml + '<li><a href="#'+window.localStorage.key( i ).split('-')[1]+'">'+window.localStorage.key( i )+'</a></li>'
+    }
+    if (window.localStorage.key( i ).indexOf('metadata') > -1) {
+      console.log(emalTemplate.get(window.localStorage.key( i ).split('-')[1]))
+      //$('#cEt').append('<li><p>'+window.localStorage.key( i ).split('-')[1]+'</p></li>')
+      setTimeout(function(){
+        console.log($('#cet').outerHTML)
+      }, 5000);
+        $('#cet').innerHTML = '<li><a href="#">tedc15</a></li>'
+      // $('#cEt').html = $('#cEt').html()
+      console.log($('#cet').html())
+      $( "#cet" ).css( "border", "3px solid red" );
+
+      return
+      if (window.localStorage.getItem( 'template-'+window.localStorage.key( i ).split('-')[1] ) !== null) {
+      var myValue = '<li><a href="#">'+window.localStorage.key( i ).split('-')[1]+'<i class="icon-arrow-right"></i></a><ul class="dropdown-menu sub-menu"><li><a href="#'+window.localStorage.key( i ).split('-')[1]+'">DELETE: '+window.localStorage.key( i ).split('-')[1]+'</a></li></ul></li>'
+      beforeHtml = beforeHtml
+
+      $('.scrollable-menu').append(myValue)
+      console.log('APPENDED ' + myValue)
+      } else {
+        var myValue = '<li style="color: red;"><a style="color: red;" href="#'+window.localStorage.key( i ).split('-')[1]+'">'+window.localStorage.key( i ).split('-')[1]+'</a></li>'
+        beforeHtml = beforeHtml + myValue
+        console.log('ME'+$('.scrollable-menu').html().toString())
+        $('.scrollable-menu').html(myValue)
+        console.log('APPENDED ' + myValue)
+        // console.log('GOT: '+ window.localStorage.getItem( 'template-'+window.localStorage.key( i ).split('-')[1] ))
+      }
+    }
+    if (i === window.localStorage.length -1) {
+      setTimeout(function(){
+        var afterHtml = ''
+        var completHtml = beforeHtml + afterHtml;
+        console.log('COM_ '+JSON.stringify(completHtml))
+        //$('.scrollable-menu').html(completHtml);
+      }, 3000)
+
+    }
+  }
+
+  /*
+  $(window).on('shashchange', function() {
+        //.. work ..
+        if ($(location).attr('href').split('#')[1] == 0) {
+        window.location.href = $(location).attr('href')
+        console.log('BEFORE RELOAD:' + $(location).attr('href'))
+        //window.location.href += "#mypara";
+        // Check if Key Exists else do Nothing
+        location.reload();
+        console.log('GOOD')
+      } else {
+        console.log($(location).attr('href').split('#')[1])
+      }
+  });
+  */
+
+})
+
+</script>
+<p>{{message}}</p>

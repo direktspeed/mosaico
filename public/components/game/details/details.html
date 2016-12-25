@@ -1,0 +1,15 @@
+<script id="demo-html" can-autorender type="text/stache">
+<can-import from="mosaico/models/fixtures/games" />
+<can-import from="mosaico/components/game/details/" />
+
+<game-details game-id="1" session="{session}"></games-details>
+</script>
+
+<script src="../../../node_modules/steal/steal.js" main="@empty" id='demo-source'>
+import $ from "jquery";
+import Session from "mosaico/models/session";
+import 'can-component';
+import 'can-view-autorender';
+
+$('#demo-html').viewModel().session = new Session({user: {isAdmin: true}});
+</script>

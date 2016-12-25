@@ -1,0 +1,86 @@
+{
+  "name": "mosaico",
+  "version": "0.3.2",
+  "description": "mosaico-frontend or app",
+  "homepage": "",
+  "author": "Direktspeed",
+  "scripts": {
+    "install": "node build.js",
+    "test": "rm -rf ~/.mozilla && DEBUG=testee* testee test.html --browsers firefox --reporter Spec"
+  },
+  "main": "index.stache!done-autorender",
+  "files": [
+    "."
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "can-component": "^3.0.2",
+    "can-connect": "^1.0.17",
+    "can-construct": "^3.0.1",
+    "can-define": "^1.0.6",
+    "can-define-backup": "0.0.1",
+    "can-define-stream": "0.0.6",
+    "can-namespace": "^1.0.0",
+    "can-route": "^3.0.2",
+    "can-route-pushstate": "^3.0.0",
+    "can-set": "^1.0.1",
+    "can-stache": "^3.0.14",
+    "can-stream": "0.0.5",
+    "can-util": "^3.1.0",
+    "can-view-autorender": "^3.0.0",
+    "can-view-model": "^3.0.0",
+    "can-view-target": "^3.0.3",
+    "done-autorender": "^0.9.0-pre.0",
+    "done-component": "^0.6.0-pre.1",
+    "done-css": "~2.1.0-pre.0",
+    "done-serve": "^0.3.0-pre.0",
+    "done-ssr-middleware": "^0.4.0-pre.0",
+    "funcunit": "^3.1.0-pre.1",
+    "generator-donejs": "0.6.4",
+    "jquery": "^3.1.1",
+    "moment": "^2.10.6",
+    "steal": "^0.16.41",
+    "steal-platform": "0.0.4",
+    "steal-qunit": "^0.1.1",
+    "steal-stache": "^3.0.0",
+    "steal-tools": "^0.16.0",
+    "yeoman-environment": "^1.2.7"
+  },
+  "devDependencies": {
+    "donejs-cli": "^0.10.0-pre.0",
+    "can-fixture": "1.0.7",
+    "testee": "^0.2.4"
+  },
+  "system": {
+    "configDependencies": [
+      "node_modules/can-zone/register",
+      "live-reload"
+    ],
+    "npmAlgorithm": "flat",
+    "npmIgnore": [
+      "documentjs",
+      "testee",
+      "steal-tools"
+    ],
+    "envs": {
+      "server-production": {
+        "renderingBaseURL": "https://mosaico-donejs.firebaseapp.com/"
+      }
+    },
+    "meta": {
+      "bootstrap/js/dropdown": {
+        "deps": [
+          "jquery"
+        ]
+      }
+    },
+    "bundle": [
+      "mosaico/components/user/details/",
+      "mosaico/components/user/list/",
+      "mosaico/components/templatesfilled/list/",
+      "mosaico/components/404.component!"
+    ]
+  }
+}

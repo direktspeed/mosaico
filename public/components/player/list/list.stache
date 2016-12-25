@@ -1,0 +1,53 @@
+<can-import from="mosaico/components/player/edit/" />
+<can-import from="mosaico/components/player/create/" />
+<h2>Players</h2>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Age</th>
+			<th>Weight</th>
+			<th>Height</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#playersPromise.isPending}}
+			<tr class='info'><td colspan='5'>Loading</td></tr>
+		{{/playersPromise.isPending}}
+		{{#if playersPromise.isResolved}}
+			{{#each playersPromise.value}}
+				<tr>
+					{{#eq . editingPlayer}}
+						<td>
+							<player-edit {(player)}="editingPlayer" {is-admin}="isAdmin"
+								(saved)="removeEdit" (canceled)="removeEdit"/>
+						</td>
+					{{else}}
+						<td>{{name}}</td>
+						<td>{{age}}</td>
+						<td>{{weight}}</td>
+						<td>{{height}}</td>
+						<td>
+							{{#if isAdmin}}
+								<button type="button" class="btn btn-default" ($click)="editPlayer(.)">
+									<span class='glyphicon glyphicon-edit'/>
+								</button>
+								<button type="button" class="btn btn-danger"
+									($click)="deletePlayer(.)"
+									{{#isDestroying}}disabled{{/isDestroying}}>
+									<span class='glyphicon glyphicon-remove'/>
+								</button>
+							{{/if}}
+						</td>
+					{{/if}}
+				</tr>
+			{{else}}
+				<tr class="empty-list-placeholder"><td class="text-center lead" colspan="5">No Players</td></tr>
+			{{/each}}
+		{{/if}}
+	</tbody>
+</table>
+{{#if isAdmin}}
+<player-create {is-admin}="isAdmin" {(player)}="editingPlayer"/>
+{{/if}}

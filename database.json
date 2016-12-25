@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "driver": "sqlite3",
+    "filename": "sqlite.db"
+  },
+  "test": "postgres://localhost:5432/mosaico",
+  "prod": {
+  	"ENV": "DATABASE_URL",
+  	"driver": "pg"
+  }
+}

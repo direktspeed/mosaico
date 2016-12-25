@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=1024, initial-scale=1">
+
+    <link rel="canonical" href="http://mosaico.io" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+    <script src="vendor/jquery.min.js"></script>
+    <script src="vendor/knockout.js"></script>
+    <script src="vendor/jquery-ui.min.js"></script>
+    <script src="vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="vendor/load-image.all.min.js"></script>
+    <script src="vendor/canvas-to-blob.min.js"></script>
+    <script src="vendor/jquery.iframe-transport.js"></script>
+    <script src="vendor/jquery.fileupload.js"></script>
+    <script src="vendor/jquery.fileupload-process.js"></script>
+    <script src="vendor/jquery.fileupload-image.js"></script>
+    <script src="vendor/jquery.fileupload-validate.js"></script>
+    <script src="vendor/knockout-jqueryui.min.js"></script>
+    <script src="vendor/tinymce.min.js"></script>
+
+    <script src="mosaico.min.js?v=0.15"></script>
+    <script>
+$(function() {
+
+
+  if (!Mosaico.isCompatible()) {
+    alert('Update your browser!');
+    return;
+  }
+    var initialEdits = [];
+    if (localStorage.getItem('edits')) {
+      var editKeys = JSON.parse(localStorage.getItem('edits'));
+      var md;
+      for (var i = 0; i < editKeys.length; i++) {
+        md = localStorage.getItem('metadata-'+editKeys[i]);
+        if (typeof md == 'string') {
+          initialEdits.push(JSON.parse(md));
+        } else {
+          console.log("Ignoring saved key", editKeys[i], "type", typeof md, md);
+        }
+      }
+
+      initialEdits.sort(function(a, b) {
+        var lastA = a.changed ? a.changed : a.created;
+        var lastB = b.changed ? b.changed : b.created;
+        if (lastA < lastB) return 1;
+        if (lastA > lastB) return -1;
+        return 0;
+      });
+    }
+
+    var viewModel = {
+      showSaved: ko.observable(false),
+      edits: ko.observableArray(initialEdits),
+      templates: [{
+        name: 'versafix-1', desc: 'The versatile template'
+      },{
+        name: 'tedc15', desc: 'The TEDC15 template'
+      },{
+        name: 'tutorial', desc: 'The Tutorial'
+      }]
+    };
+
+    viewModel.edits.subscribe(function(newEdits) {
+      var keys = [];
+      for (var i = 0; i < newEdits.length; i++) {
+        keys.push(newEdits[i].key);
+        localStorage.setItem('metadata-'+newEdits[i].key, ko.toJSON(newEdits[i]));
+      }
+      localStorage.setItem('edits', ko.toJSON(keys));
+    });
+
+    viewModel.dateFormat = function(unixdate) {
+      if (typeof unixdate == 'undefined') return 'DD-MM-YYYY';
+      var d = new Date();
+      d.setTime(ko.utils.unwrapObservable(unixdate));
+      var m = ""+(d.getMonth()+1);
+      var h = ""+(d.getHours());
+      var i = ""+(d.getMinutes());
+      return d.getDate()+"/"+(m.length == 1 ? '0' : '')+m+"/"+d.getFullYear()+" "+(h.length == 1 ? '0' : '')+h+":"+(i.length == 1 ? '0' : '')+i;
+    };
+
+    viewModel.newEdit = function(shorttmplname) {
+      console.log("new", this, template);
+      var d = new Date();
+      var rnd = Math.random().toString(36).substr(2, 7);
+      var template = 'templates/'+shorttmplname+'/template-'+shorttmplname+'.html';
+      viewModel.edits.unshift({ created: Date.now(), key: rnd, name: shorttmplname, template: template });
+      document.location = 'editor_en.html#'+rnd;
+      // { data: 'AAAA-MM-GG', key: 'ABCDE' }
+      // viewModel.edits.push(template);
+    };
+    viewModel.renameEdit = function(index) {
+      var newName = window.prompt("Modifica nome", viewModel.edits()[index].name);
+      if (newName) {
+        var newItem = JSON.parse(ko.toJSON(viewModel.edits()[index]));
+        newItem.name = newName;
+        viewModel.edits.splice(index, 1, newItem);
+      }
+      return false;
+    };
+    viewModel.deleteEdit = function(index) {
+      var confirm = window.confirm("Are you sure you want to delete this content?");
+      if (confirm) {
+        var res = viewModel.edits.splice(index, 1);
+        console.log("removing template ", res);
+        localStorage.removeItem('template-'+res[0].key);
+      }
+      return false;
+    };
+    viewModel.list = function(clean) {
+      for (var i = localStorage.length - 1; i >= 0; i--) {
+        var key = localStorage.key(i);
+        if (clean) {
+          console.log("removing ", key, localStorage.getItem(key));
+          localStorage.removeItem(key);
+        } else {
+          console.log("ls ", key, localStorage.getItem(key));
+        }
+      }
+    };
+    /*
+    document.addEventListener('DOMContentLoaded',function(){
+      ko.applyBindings(viewModel);
+    });
+*/
+
+
+  // var basePath = window.location.href.substr(0, window.location.href.lastIndexOf('/')).substr(window.location.href.indexOf('/','https://'.length));
+  var basePath = window.location.href;
+  if (basePath.lastIndexOf('#') > 0) basePath = basePath.substr(0, basePath.lastIndexOf('#'));
+  if (basePath.lastIndexOf('?') > 0) basePath = basePath.substr(0, basePath.lastIndexOf('?'));
+  if (basePath.lastIndexOf('/') > 0) basePath = basePath.substr(0, basePath.lastIndexOf('/'));
+  var plugins;
+  // A basic plugin that expose the "viewModel" object as a global variable.
+  // plugins = [function(vm) {window.viewModel = vm;}];
+
+
+<!-- //NOTE: start DS_CHANGED -->
+  var ok = Mosaico.init({
+    imgProcessorBackend: basePath+'/img/',
+    emailProcessorBackend: basePath+'/dl/',
+    titleToken: "MOSAICO Responsive Email Designer",
+    fileuploadConfig: {
+      url: basePath+'/upload/',
+      // messages??
+    }
+  }, plugins);
+  if (!ok) {
+    console.log("Missing initialization hash, redirecting to main entrypoint");
+    document.location = ".";
+  } else {
+      setTimeout(function () {
+          var templates = "/editor.html#templates/versafix-1/template-versafix-1.html"
+
+          var beforeHtml = '<div style="z-index: 99999; position: fixed; top: 5px; left: 1px">'+
+          '<div class="dropdown">'+
+          '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">DS'+
+          '<span class="caret"></span></button>'+
+          '<ul class="dropdown-menu">' +
+          '<li><a href="#">import</a></li>' +
+          '<li class="dropdown-submenu"><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> <span class="caret"></span></button><ul class="dropdown-menu">'+
+          '<li><a tabindex="-1" href="#">Templates 2nd level dropdown</a></li>'+
+          '<li><a tabindex="-1" href="#">2nd level dropdown</a></li>'+
+          '</ul></li>' +
+          '<li class="dropdown-submenu"><a class="test" tabindex="-1" href="#">Existing <span class="caret"></span></a><ul class="dropdown-menu">'
+
+
+
+          var keys = []
+          for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+            // console.log( localStorage.getItem( localStorage.key( i ) ) );
+            if (localStorage.key( i ).indexOf('template') > -1) {
+              // console.log( localStorage.key( i ) );
+              // beforeHtml = beforeHtml + '<li><a href="#'+localStorage.key( i ).split('-')[1]+'">'+localStorage.key( i )+'</a></li>'
+            }
+            if (localStorage.key( i ).indexOf('metadata') > -1) {
+              if (localStorage.getItem( 'template-'+localStorage.key( i ).split('-')[1] ) !== null) {
+              console.log( 'template-'+localStorage.key( i ).split('-')[1] );
+              console.log( localStorage.getItem( 'template-'+localStorage.key( i ).split('-')[1] ) )
+              console.log( localStorage.getItem( localStorage.key( i ) ) )
+              console.log( 'template-'+localStorage.key( i ).split('-')[1] );
+              beforeHtml = beforeHtml + '<li><a href="#'+localStorage.key( i ).split('-')[1]+'">'+localStorage.key( i ).split('-')[1]+'</a></li>'
+              } else {
+                beforeHtml = beforeHtml + '<li style="color: red;"><a style="color: red;" href="#'+localStorage.key( i ).split('-')[1]+'">'+localStorage.key( i ).split('-')[1]+'</a></li>'
+                // console.log('GOT: '+ localStorage.getItem( 'template-'+localStorage.key( i ).split('-')[1] ))
+              }
+            }
+
+          }
+
+
+          $(window).on('hashchange', function() {
+                //.. work ..
+                if ($(location).attr('href').split('#')[1] == 0) {
+                window.location.href = $(location).attr('href')
+                console.log('BEFORE RELOAD:' + $(location).attr('href'))
+                //window.location.href += "#mypara";
+                // Check if Key Exists else do Nothing
+                location.reload();
+                console.log('GOOD')
+              } else {
+                console.log($(location).attr('href').split('#')[1])
+              }
+          });
+          var afterHtml = '</ul></li>'+'</ul></div></div>'
+          var completHtml = beforeHtml + afterHtml
+          $('#loading').html(completHtml);
+      }, 1000)
+  }
+});
+    </script>
+    <style>
+    ds.dropdown-menu li:hover .sub-menu {
+        visibility: visible;
+    }
+
+    ds.dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open>.dropdown-toggle.btn-primary.focus, .open>.dropdown-toggle.btn-primary:focus, .open>.dropdown-toggle.btn-primary:hover {
+      color: #fff;
+      background-color: #204d74;
+      border-color: #122b40;
+    }
+    .btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
+        background-image: none;
+    }
+    .btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
+        color: #fff;
+        background-color: #286090;
+        border-color: #204d74;
+    }
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #286090;
+        border-color: #204d74;
+    }
+    .btn.focus, .btn:focus, .btn:hover {
+        color: #333;
+        text-decoration: none;
+    }
+    button, html [type=button], [type=reset], [type=submit] {
+        -webkit-appearance: button;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+    .btn {
+        display: inline-block;
+        padding: 3px 9px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .open>.dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 9000;
+        display: none;
+        float: left;
+        min-width: 160px;
+        padding: 5px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0,0,0,.15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- //NOTE: end DS_CHANGED -->
+    <link rel="stylesheet" href="mosaico-material.min.css?v=0.10" />
+    <link rel="stylesheet" href="vendor/notoregular/stylesheet.css" />
+
+  </head>
+  <body class="mo-standalone">
+
+
+  </body>
+</html>

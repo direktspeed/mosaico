@@ -1,0 +1,77 @@
+{
+  "name": "mosaico-admin",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "",
+  "author": {
+    "name": "",
+    "email": "",
+    "url": ""
+  },
+  "scripts": {
+    "test": "testee src/test.html --browsers firefox --reporter Spec",
+    "start": "done-serve --port 8080",
+    "develop": "done-serve --develop --port 8080",
+    "document": "documentjs",
+    "build": "node build"
+  },
+  "main": "mosaico-admin/index.stache!done-autorender",
+  "files": [
+    "src"
+  ],
+  "keywords": [],
+  "system": {
+    "main": "mosaico-admin/index.stache!done-autorender",
+    "directories": {
+      "lib": "src"
+    },
+    "configDependencies": [
+      "live-reload",
+      "node_modules/can-zone/register"
+    ],
+    "transpiler": "babel",
+    "npmAlgorithm": "flat"
+  },
+  "steal": {
+    "main": "mosaico-admin/index.stache!done-autorender",
+    "directories": {
+      "lib": "src"
+    },
+    "configDependencies": [
+      "live-reload",
+      "node_modules/can-zone/register"
+    ],
+    "transpiler": "babel",
+    "npmAlgorithm": "flat"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "can": "^2.3.28",
+    "can-connect": "^1.0.21",
+    "can-define": "^1.0.10",
+    "can-route-pushstate": "^3.0.1",
+    "can-stache": "^3.0.17",
+    "can-util": "^3.2.0",
+    "can-zone": "^0.6.1",
+    "done-autorender": "git+https://github.com/donejs/autorender#major",
+    "done-component": "git+https://github.com/donejs/done-component#major",
+    "done-css": "~2.0.2",
+    "done-serve": "git+https://github.com/donejs/done-serve#major",
+    "done-ssr": "git+https://github.com/donejs/done-ssr.git#major",
+    "jquery": "^1.12.4",
+    "steal": "^1.0.6",
+    "steal-css": "^1.0.0",
+    "steal-less": "^1.0.1",
+    "steal-tools": "^1.0.1"
+  },
+  "devDependencies": {
+    "documentjs": "^0.4.2",
+    "donejs-deploy": "^0.4.0",
+    "funcunit": "~3.0.0",
+    "steal-qunit": "^0.1.1",
+    "steal-tools": "^0.16.0",
+    "testee": "^0.2.4",
+    "donejs-cli": "^0.9.4",
+    "can-fixture": "^0.1.2"
+  }
+}
