@@ -45,7 +45,7 @@
     "passport": "~0.2.0",
     "passport-local": "^1.0.0",
     "pg": "4.x",
-    "tinymce": "^4.5.1"
+    "tinymce": "^4.5.2"
   },
   "engines": {
     "node": "0.12.2"
