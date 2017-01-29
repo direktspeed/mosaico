@@ -31,7 +31,7 @@
     "cookie-parser": "^1.4.1",
     "db-migrate": "^0.9.18",
     "ejs": "^2.3.1",
-    "express": "~4.9.x",
+    "express": "~5.0.0-alpha.3",
     "express-session": "^1.11.3",
     "gm": "^1.23.0",
     "jquery-file-upload-middleware": "^0.1.8",
