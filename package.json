@@ -41,7 +41,7 @@
     "knockout-jqueryui": "^2.2.3",
     "lodash": "^3.10.1",
     "nodemailer": "^2.3.0",
-    "npm": "^3.7.2",
+    "npm": "^4.4.4",
     "passport": "~0.2.0",
     "passport-local": "^1.0.0",
     "pg": "4.x",
