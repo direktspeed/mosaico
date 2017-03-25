@@ -22,7 +22,7 @@
     "install:new": "npm run install:frontend && npm run install:backend"
   },
   "dependencies": {
-    "async": "^1.4.0",
+    "async": "^2.2.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.3",
     "bookshelf": "^0.8.1",
