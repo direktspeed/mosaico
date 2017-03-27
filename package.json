@@ -32,7 +32,7 @@
     "db-migrate": "^0.9.18",
     "ejs": "^2.3.1",
     "express": "~4.9.x",
-    "express-session": "^1.11.3",
+    "express-session": "^1.15.2",
     "gm": "^1.23.0",
     "jquery-file-upload-middleware": "^0.1.8",
     "jquery-ui": "^1.12.1",
