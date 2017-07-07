@@ -62,7 +62,7 @@
   "license": "MIT",
   "devDependencies": {
     "documentjs": "^0.3.3",
-    "donejs": "^0.7.0-pre.1",
+    "donejs": "^1.0.1",
     "donejs-cli": "^0.10.0-pre.0",
     "donejs-deploy": "^0.4.1",
     "jshint": "^2.9.1",
