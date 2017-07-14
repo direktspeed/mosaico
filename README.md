@@ -22,6 +22,8 @@ If you want to run the new fresh with own backend.
 
 ------
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/direktspeed/mosaico.svg)](https://greenkeeper.io/)
+
 To run the Mosaico app locally, run its tests, or generate its documentation
 follow the steps outlined below.
 
